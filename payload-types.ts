@@ -17,6 +17,7 @@ export interface Config {
     entries: Entry;
     notetypes: Notetype;
     'materials-lKJ16E5IhH': MaterialsLKJ16E5IhH;
+    'termRarity-lKJ16E5IhH': TermRarityLKJ16E5IhH;
   };
   globals: {};
 }
@@ -128,7 +129,17 @@ export interface MaterialsLKJ16E5IhH {
   entry: string | Entry;
   id: string;
   story?: string;
+  rarity?: string | TermRarityLKJ16E5IhH;
   type?: ('consumables' | 'synthesis-material')[];
+  createdAt: string;
+  updatedAt: string;
+}
+export interface TermRarityLKJ16E5IhH {
+  entry: string | Entry;
+  id: string;
+  data_key?: string;
+  display_number?: string;
+  checksum?: string;
   createdAt: string;
   updatedAt: string;
 }

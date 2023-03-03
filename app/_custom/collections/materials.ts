@@ -29,6 +29,13 @@ export const Materials: CollectionConfig = {
          type: "text",
       },
       {
+         name: "rarity",
+         type: "relationship",
+		 relationTo: "termRarity-lKJ16E5IhH",
+		 hasMany: false,
+		 required: false,
+      },
+      {
          name: "type",
          type: "select",
          hasMany: true,
