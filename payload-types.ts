@@ -16,8 +16,10 @@ export interface Config {
     questions: Question;
     entries: Entry;
     notetypes: Notetype;
+    'character-lKJ16E5IhH': CharacterLKJ16E5IhH;
     'materials-lKJ16E5IhH': MaterialsLKJ16E5IhH;
     'termRarity-lKJ16E5IhH': TermRarityLKJ16E5IhH;
+    'termElement-lKJ16E5IhH': TermElementLKJ16E5IhH;
   };
   globals: {};
 }
@@ -125,21 +127,71 @@ export interface Entry {
   createdAt: string;
   updatedAt: string;
 }
-export interface MaterialsLKJ16E5IhH {
+export interface CharacterLKJ16E5IhH {
   entry: string | Entry;
   id: string;
-  story?: string;
-  rarity?: string | TermRarityLKJ16E5IhH;
-  type?: ('consumables' | 'synthesis-material')[];
+  name?: string;
+  character_id?: string;
+  term_rarity?: string | TermRarityLKJ16E5IhH;
+  term_element?: string | TermElementLKJ16E5IhH;
+  sp_need?: number;
+  exp_group?: number;
+  max_promotion?: number;
+  max_rank?: number;
+  reward_list: {
+    item?: string | MaterialsLKJ16E5IhH;
+    qty?: number;
+  };
+  stats: {
+    label?: string;
+    data?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+  };
+  checksum?: string;
   createdAt: string;
   updatedAt: string;
 }
 export interface TermRarityLKJ16E5IhH {
   entry: string | Entry;
   id: string;
+  name?: string;
   data_key?: string;
   display_number?: string;
   checksum?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface TermElementLKJ16E5IhH {
+  entry: string | Entry;
+  id: string;
+  data_key?: string;
+  name?: string;
+  icon_path?: string;
+  icon_active_path?: string;
+  icon_color_path?: string;
+  icon_damage_res_path?: string;
+  icon_inactive_path?: string;
+  icon_active?: string | Image;
+  icon_color?: string | Image;
+  icon_damage_res?: string | Image;
+  icon_inactive?: string | Image;
+  checksum?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface MaterialsLKJ16E5IhH {
+  entry: string | Entry;
+  id: string;
+  story?: string;
+  rarity?: string | TermRarityLKJ16E5IhH;
+  type?: ('consumables' | 'synthesis-material')[];
   createdAt: string;
   updatedAt: string;
 }

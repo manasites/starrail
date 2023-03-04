@@ -21,9 +21,18 @@ export const termRarity: CollectionConfig = {
          relationTo: "entries",
          hasMany: false,
          required: true,
+		 filterOptions: () => {
+			 return {
+				 collectionEntity: { equals: "termRarity-lKJ16E5IhH" },
+			 };
+		 },
       },
       {
          name: "id",
+         type: "text",
+      },
+      {
+         name: "name",
          type: "text",
       },
       {
