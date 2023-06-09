@@ -11,7 +11,7 @@
       "baseUrl": ".",
       "paths": {
          "~/*": ["./app/*"],
-         "payload/generated-types": ["./app/db/payload-types.ts"]
+         "payload/generated-types": ["./app/db/payload-custom-types.ts"]
       }
    },
    "include": ["custom.server.ts", "payload.custom.config.ts"],
