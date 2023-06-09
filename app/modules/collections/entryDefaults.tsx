@@ -3,6 +3,7 @@ import type { V2_MetaFunction } from "@remix-run/node";
 import { z } from "zod";
 import { zx } from "zodix";
 import type { Payload } from "payload";
+import type { Entry } from "payload/generated-types";
 
 export const getDefaultEntryData = async ({
    payload,
@@ -41,10 +42,10 @@ export const getDefaultEntryData = async ({
       return entry;
    }
 
-   const entry = await payload.findByID({
+   const entry = (await payload.findByID({
       collection: "entries",
       id: entryId,
-   });
+   })) as Entry;
    return entry;
 };
 
