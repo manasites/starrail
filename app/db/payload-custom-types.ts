@@ -78,8 +78,8 @@ export interface Character {
   exp_group?: number;
   max_promotion?: number;
   max_rank?: number;
-  eidolons?: string[] | Eidolon[];
-  traces?: string[] | Trace[];
+  eidolons?: Eidolon[];
+  traces?: Trace[];
   icon_name?: string;
   image_round_icon_name?: string;
   image_action_name?: string;
@@ -321,7 +321,7 @@ export interface SkillTree {
     value?: number;
     id?: string;
   }[];
-  affected_skill?: string[] | Trace[];
+  affected_skill?: Trace[];
   checksum?: string;
   updatedAt: string;
   createdAt: string;
@@ -429,8 +429,8 @@ export interface Relic {
   }[];
   relicset_id?: RelicSet;
   relic_type?: string;
-  mainstat_group?: string[] | _RelicStat[];
-  substat_group?: string[] | _RelicStat[];
+  mainstat_group?: _RelicStat[];
+  substat_group?: _RelicStat[];
   max_level?: number;
   exp_type?: number;
   exp_value?: number;
@@ -496,7 +496,7 @@ export interface Enemy {
   camp?: _EnemyCamp;
   icon?: Image;
   image_full?: Image;
-  enemy_variations?: string[] | EnemyVariation[];
+  enemy_variations?: EnemyVariation[];
   icon_name?: string;
   image_full_name?: string;
   checksum?: string;
@@ -525,13 +525,13 @@ export interface EnemyVariation {
   elite_group?: number;
   rank?: string;
   description?: string;
-  skill_list?: string[] | EnemySkill[];
+  skill_list?: EnemySkill[];
   debuff_resist?: {
     debuff?: _EnemyStatusRe;
     value?: number;
     id?: string;
   }[];
-  elemental_weaknesses?: string[] | _Element[];
+  elemental_weaknesses?: _Element[];
   damage_resist?: {
     element?: _Element;
     value?: number;
@@ -566,7 +566,7 @@ export interface EnemyVariation {
   rewards?: {
     world_level?: number;
     exp_reward?: number;
-    drop_list?: string[] | Material[];
+    drop_list?: Material[];
     id?: string;
   }[];
   checksum?: string;
@@ -670,9 +670,9 @@ export interface Recipe {
     qty?: number;
     id?: string;
   }[];
-  special_material_cost?: string[] | Material[];
+  special_material_cost?: Material[];
   special_material_cost_num?: number;
-  relic_list?: string[] | Relic[];
+  relic_list?: Relic[];
   is_show_hold_num?: boolean;
   limit_type?: string;
   func_type?: string;
@@ -715,10 +715,10 @@ export interface Banner {
   run?: number;
   start_date?: string;
   end_date?: string;
-  featured_characters?: string[] | Character[];
-  featured_light_cones?: string[] | LightCone[];
-  banner_characters?: string[] | Character[];
-  banner_light_cones?: string[] | LightCone[];
+  featured_characters?: Character[];
+  featured_light_cones?: LightCone[];
+  banner_characters?: Character[];
+  banner_light_cones?: LightCone[];
   updatedAt: string;
   createdAt: string;
 }

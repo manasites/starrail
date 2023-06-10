@@ -9,6 +9,7 @@ import {
    getCustomEntryData,
 } from "~/modules/collections";
 import type { LightCone } from "payload/generated-custom-types";
+import type { Entry } from "payload/generated-types";
 
 import { Stats } from "~/_custom/components/lightCones/Stats";
 import { Effect } from "~/_custom/components/lightCones/Effect";
@@ -28,7 +29,7 @@ export async function loader({
       payload,
       params,
       request,
-   })) as LightCone;
+   })) as Entry;
    const defaultData = (await getCustomEntryData({
       payload,
       params,
@@ -65,12 +66,12 @@ export async function loader({
 }
 
 export default function LightConeEntry() {
-   const { defaultData } = useLoaderData<typeof loader>();
+   const { entryDefault, defaultData } = useLoaderData<typeof loader>();
    // const { relicData } = useLoaderData<typeof loader>();
 
    return (
       <EntryParent>
-         <EntryHeader entry={defaultData} />
+         <EntryHeader entry={entryDefault} />
          <EntryContent>
             <Stats pageData={defaultData} />
 

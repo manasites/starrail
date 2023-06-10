@@ -14,6 +14,7 @@ import {
    Legend,
 } from "chart.js";
 import { BarChart2, ChevronDown, Binary } from "lucide-react";
+import type { LightCone } from "payload/generated-custom-types";
 
 ChartJS.register(
    CategoryScale,
@@ -25,36 +26,26 @@ ChartJS.register(
    Legend
 );
 
-export const Stats = ({ pageData }: any) => {
+export const Stats = ({ pageData }: { pageData: LightCone }) => {
    // Usestate Variable Settings
    const [levelSliderValue, setLevelSliderValue] = useState(80);
    const [levelAscensionCheck, setLevelAscensionCheck] = useState(true);
    const [graphStat, setGraphStat] = useState("HP");
 
-   var imgurl = pageData.image_full?.url;
-   var pathurl = pageData.path?.icon?.url;
-   var pathsmall = pageData.path?.icon_small?.url;
-   var rarityurl = pageData.rarity?.icon?.url;
-   var pathname = pageData.path?.name;
+   let imgurl = pageData.image_full?.url;
+   let pathurl = pageData.path?.icon?.url;
+   let pathsmall = pageData.path?.icon_small?.url;
+   let rarityurl = pageData.rarity?.icon?.url;
+   let pathname = pageData.path?.name;
 
-   var statlist = ["HP", "ATK", "DEF"];
+   let statlist = ["HP", "ATK", "DEF"];
    // =====================================
    // PREPROCESSING STEPS
    // Create an object that can be iterated through to generate data rows of stat data
-   var statobj = [];
-   for (var i = 0; i < statlist.length; i++) {
-      statobj[i] = {};
-      statobj[i].stat = statlist[i];
 
-      // Pull Stat's Icon image hash
-      // var currstat = statData.statTypes.find((a) => a.name == statlist[i]);
-      // if (currstat?.icon) {
-      //   statobj[i].hash = currstat.icon?.hash ?? "no_image_42df124128";
-      // }
+   // Alternate coloring every other stat.
 
-      // Alternate coloring every other stat.
-      statobj[i].colormod = i % 2;
-   }
+   let statobj = statlist.map((stat, i) => ({ stat: stat, colormod: i % 2 }));
 
    // =====================================
    // End Preprocessing for Stat Block, Output HTML Start
@@ -136,13 +127,15 @@ export const Stats = ({ pageData }: any) => {
                            </div>
                            {/* 2biii) Stat value */}
                            <div className="">
-                              {pageData?.stats.find((a) => a.label == stat.stat)
+                              {pageData?.stats?.find(
+                                 (a) => a.label == stat.stat
+                              )
                                  ? formatStat(
                                       stat.stat,
-                                      pageData?.stats.find(
+                                      pageData?.stats?.find(
                                          (a) => a.label == stat.stat
                                       ).data[
-                                         pageData?.stats
+                                         pageData?.stats?
                                             .find((a) => a.label == "Lv")
                                             .data.indexOf(
                                                "" +
@@ -412,7 +405,7 @@ const StatGraph = ({ charData, graphStat, setGraphStat }) => {
                                     setGraphStat(event.target.value)
                                  }
                               >
-                                 {statlist.map(stat => {
+                                 {statlist.map((stat) => {
                                     return (
                                        <option value={stat} key={stat}>
                                           {stat}
