@@ -3,7 +3,7 @@
    "sideEffects": false,
    "scripts": {
       "build": "yarn run generate:types && run-p \"build:*\"",
-      "build:remix": "remix build",
+      "build:remix": "remix build --sourcemap",
       "build:payload": "cross-env PAYLOAD_CONFIG_PATH=./app/db/payload.config.ts payload build",
       "build:server": "tsc -p tsconfig.server.json",
       "start:core": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js NODE_ENV=production node dist/core.server.js",
@@ -71,6 +71,7 @@
       "react-error-boundary": "^3.1.4",
       "react-hot-toast": "^2.4.0",
       "react-i18next": "^12.1.4",
+      "react-lazily": "^0.9.2",
       "react-textarea-autosize": "^8.4.1",
       "react-tooltip": "^5.10.5",
       "react-zorm": "^0.6.1",

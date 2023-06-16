@@ -24,12 +24,18 @@ import { Story } from "~/_custom/components/characters/Story";
 import { zx } from "zodix";
 import { z } from "zod";
 import { H2 } from "~/_custom/components/custom";
-import { EntryContentEmbed } from "~/modules/collections/components/EntryContentEmbed";
+// import { EntryContentEmbed } from "~/modules/collections/components/EntryContentEmbed";
+import { lazily } from "react-lazily";
+
+const { EntryContentEmbed } = lazily(
+   () => import("~/modules/collections/components/EntryContentEmbed")
+);
 
 import type {
    Character,
    SkillTree as SkillTreeType,
 } from "payload/generated-custom-types";
+import React from "react";
 
 export { meta };
 
@@ -103,24 +109,28 @@ export default function CharacterEntry() {
 
             {/* Character Image with Element / Path */}
             <CharacterStatBlock pageData={entryDefault} />
-            <EntryContentEmbed
-               title="Teams"
-               sectionId="teams"
-               collectionEntity="characters"
-               siteId={siteId}
-               fetcher={fetcher}
-               entryId={entryId}
-               defaultValue={embeddedContent}
-            />
-            <EntryContentEmbed
-               title="Recommended Light Cones"
-               sectionId="light-cones"
-               collectionEntity="characters"
-               siteId={siteId}
-               fetcher={fetcher}
-               entryId={entryId}
-               defaultValue={embeddedContent}
-            />
+            {embeddedContent && (
+               <EntryContentEmbed
+                  title="Teams"
+                  sectionId="teams"
+                  collectionEntity="characters"
+                  siteId={siteId}
+                  fetcher={fetcher}
+                  entryId={entryId}
+                  defaultValue={embeddedContent}
+               />
+            )}
+            {embeddedContent && (
+               <EntryContentEmbed
+                  title="Recommended Light Cones"
+                  sectionId="light-cones"
+                  collectionEntity="characters"
+                  siteId={siteId}
+                  fetcher={fetcher}
+                  entryId={entryId}
+                  defaultValue={embeddedContent}
+               />
+            )}
             <div id="traces"></div>
             {/* Traces / Skills */}
             <H2 text="Traces" />
