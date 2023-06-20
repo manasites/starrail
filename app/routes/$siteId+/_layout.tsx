@@ -73,8 +73,8 @@ import { LRUCache } from "lru-cache";
 const layoutCache = remember(
    "layoutCache",
    new LRUCache({
-      max: 100,
-      ttl: 10 * 60 * 1000,
+      max: 100, // maximum number of items to store in the cache
+      ttl: 5 * 60 * 1000, // how long to live in ms
    })
 );
 
