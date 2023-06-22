@@ -5,6 +5,7 @@ import { zx } from "zodix";
 import type { Payload } from "payload";
 import type { ContentEmbed } from "payload/generated-types";
 import { isSiteOwnerOrAdmin } from "~/access/site";
+import { fetchWithCache } from "~/utils/cache";
 
 type HeaderType = {
    name?: string;
@@ -82,12 +83,12 @@ export const getEmbeddedContent = async ({
    //Pull published version first if exists
    const contentEmbedUrl = `${url}/api/contentEmbeds?where[site.slug][equals]=${siteId}&where[collectionEntity.slug][equals]=${collection}&where[relationId][equals]=${entryId}&depth=1`;
    const { docs: data } = await (
-      await fetch(contentEmbedUrl, {
+      await fetchWithCache(contentEmbedUrl, {
          headers: {
             cookie: request.headers.get("cookie") ?? "",
          },
       })
-   ).json();
+   );
    if (data.length == 0) return null;
 
    //If editing, we check perms then use local api to pull
