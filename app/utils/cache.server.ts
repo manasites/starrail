@@ -1,6 +1,6 @@
 
 import { LRUCache } from "lru-cache";
-import { remember } from "./remember";
+import { remember } from "./remember.server";
 // import NProgress from "nprogress";
 // import nProgressStyles from "~/styles/nprogress.css";
 
