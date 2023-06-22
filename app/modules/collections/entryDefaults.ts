@@ -44,11 +44,7 @@ export const getDefaultEntryData = async ({
    let data = {} as HeaderType;
 
    if (collection.customEntryTemplate) {
-      const entry = await (
-         await fetch(
-            `https://${process.env.PAYLOAD_PUBLIC_SITE_ID}-db.mana.wiki/api/${collectionId}/${entryId}?depth=1`
-         )
-      ).json();
+      const entry = await fetchWithCache(`https://${process.env.PAYLOAD_PUBLIC_SITE_ID}-db.mana.wiki/api/${collectionId}/${entryId}?depth=1`);
       data = { name: entry?.name, icon: { url: entry?.icon?.url } };
       return data;
    }
@@ -153,11 +149,7 @@ export const getCustomEntryData = async ({
       entryId: z.string(),
    });
 
-   return (
-      await fetch(
-         `https://${process.env.PAYLOAD_PUBLIC_SITE_ID}-db.mana.wiki/api/${collectionId}/${entryId}?depth=${depth}`
-      )
-   ).json();
+   return fetchWithCache(`https://${process.env.PAYLOAD_PUBLIC_SITE_ID}-db.mana.wiki/api/${collectionId}/${entryId}?depth=${depth}`);
    
 };
 
