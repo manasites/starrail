@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { ClientOnly } from "remix-utils";
 import { H2 } from "~/_custom/components/custom";
 import { Image } from "~/components";
-import { fetchWithCache } from "~/utils/cache";
+import { fetchWithCache } from "~/utils/cache.server";
 
 export async function loader({
    context: { payload },

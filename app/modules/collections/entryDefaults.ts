@@ -5,7 +5,7 @@ import { zx } from "zodix";
 import type { Payload } from "payload";
 import type { ContentEmbed } from "payload/generated-types";
 import { isSiteOwnerOrAdmin } from "~/access/site";
-import { fetchWithCache } from "~/utils/cache";
+import { fetchWithCache } from "~/utils/cache.server";
 
 type HeaderType = {
    name?: string;

@@ -65,7 +65,7 @@ import type { PaginatedDocs } from "payload/dist/mongoose/types";
 import SearchComboBox from "./resource+/Search";
 
 import { useIsBot } from "~/utils/isBotProvider";
-import { fetchWithCache } from "~/utils/cache";
+import { fetchWithCache } from "~/utils/cache.server";
 
 export async function loader({
    context: { payload, user },

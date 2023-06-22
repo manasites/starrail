@@ -30,7 +30,7 @@ import type {
    Character,
    SkillTree as SkillTreeType,
 } from "payload/generated-custom-types";
-import { fetchWithCache } from "~/utils/cache";
+import { fetchWithCache } from "~/utils/cache.server";
 
 export { meta };
 

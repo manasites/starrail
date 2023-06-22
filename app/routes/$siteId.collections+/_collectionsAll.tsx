@@ -31,7 +31,7 @@ import { toast } from "~/components/Toaster";
 import { Image } from "~/components/Image";
 import type { PaginatedDocs } from "payload/dist/mongoose/types";
 import type { Collection } from "payload/generated-types";
-import { fetchWithCache } from "~/utils/cache";
+import { fetchWithCache } from "~/utils/cache.server";
 
 export async function loader({ params, request }: LoaderArgs) {
    const { siteId } = zx.parseParams(params, {

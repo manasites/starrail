@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Search, SortDesc } from "lucide-react";
 import { Image } from "~/components";
 import { H2 } from "~/_custom/components/custom";
-import { fetchWithCache } from "~/utils/cache";
+import { fetchWithCache } from "~/utils/cache.server";
 
 export async function loader({
    context: { payload },
