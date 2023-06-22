@@ -81,7 +81,7 @@ export async function loader({
 
       // Get custom collection list data
       if (collection.customDatabase) {
-         const entrylist = await await fetchWithCache(
+         const entrylist = await fetchWithCache(
             `https://${
                process.env.PAYLOAD_PUBLIC_SITE_ID
             }-db.mana.wiki/api/${collectionId}?limit=20&depth=1&page=${
@@ -100,7 +100,7 @@ export async function loader({
          collection.id
       }&where[site.slug][equals]=${siteId}&depth=0&limit=20&page=${page ?? 1}`;
 
-      const entrylist = (await await fetchWithCache(entrylistFetchUrl, {
+      const entrylist = (await fetchWithCache(entrylistFetchUrl, {
          headers: {
             cookie: request.headers.get("cookie") ?? "",
          },
