@@ -5,6 +5,8 @@ import { zx } from "zodix";
 import type { Payload } from "payload";
 import type { ContentEmbed } from "payload/generated-types";
 import { isSiteOwnerOrAdmin } from "~/access/site";
+import { cacheThis, fetchWithCache } from "~/utils/cache.server";
+import type { PaginatedDocs } from "payload/dist/mongoose/types";
 
 type HeaderType = {
    name?: string;
@@ -29,32 +31,34 @@ export const getDefaultEntryData = async ({
    const url = new URL(request.url).pathname;
    const collectionId = url.split("/")[3];
 
-   const collectionData = await payload.find({
-      collection: "collections",
-      where: {
-         slug: {
-            equals: collectionId,
+   const collectionData = await cacheThis(() =>
+      payload.find({
+         collection: "collections",
+         where: {
+            slug: {
+               equals: collectionId,
+            },
          },
-      },
-   });
+      })
+   );
 
    const collection = collectionData?.docs[0];
 
    let data = {} as HeaderType;
 
    if (collection.customEntryTemplate) {
-      const entry = await (
-         await fetch(
-            `https://${process.env.PAYLOAD_PUBLIC_SITE_ID}-db.mana.wiki/api/${collectionId}/${entryId}?depth=1`
-         )
-      ).json();
+      const entry = await fetchWithCache(
+         `https://${process.env.PAYLOAD_PUBLIC_SITE_ID}-db.mana.wiki/api/${collectionId}/${entryId}?depth=1`
+      );
       data = { name: entry?.name, icon: { url: entry?.icon?.url } };
       return data;
    }
-   const entry = await payload.findByID({
-      collection: "entries",
-      id: entryId,
-   });
+   const entry = await cacheThis(() =>
+      payload.findByID({
+         collection: "entries",
+         id: entryId,
+      })
+   );
    data = { name: entry.name, icon: { url: entry?.icon?.url } };
 
    return data;
@@ -81,13 +85,11 @@ export const getEmbeddedContent = async ({
 
    //Pull published version first if exists
    const contentEmbedUrl = `${url}/api/contentEmbeds?where[site.slug][equals]=${siteId}&where[collectionEntity.slug][equals]=${collection}&where[relationId][equals]=${entryId}&depth=1`;
-   const { docs: data } = await (
-      await fetch(contentEmbedUrl, {
-         headers: {
-            cookie: request.headers.get("cookie") ?? "",
-         },
-      })
-   ).json();
+   const { docs: data } = (await fetchWithCache(contentEmbedUrl, {
+      headers: {
+         cookie: request.headers.get("cookie") ?? "",
+      },
+   })) as PaginatedDocs<ContentEmbed>;
    if (data.length == 0) return null;
 
    //If editing, we check perms then use local api to pull
@@ -119,14 +121,14 @@ export const getEmbeddedContent = async ({
          depth: 1,
       });
       if (data.length == 0) return null;
-       embedContent = data.map((item: ContentEmbed) => ({
+      embedContent = data.map((item) => ({
          content: item.content,
          sectionId: item.sectionId,
       }));
       return embedContent;
    }
 
-    embedContent = data.map((item: ContentEmbed) => ({
+   embedContent = data.map((item) => ({
       content: item.content,
       sectionId: item.sectionId,
    }));
@@ -152,12 +154,9 @@ export const getCustomEntryData = async ({
       entryId: z.string(),
    });
 
-   return (
-      await fetch(
-         `https://${process.env.PAYLOAD_PUBLIC_SITE_ID}-db.mana.wiki/api/${collectionId}/${entryId}?depth=${depth}`
-      )
-   ).json();
-   
+   return fetchWithCache(
+      `https://${process.env.PAYLOAD_PUBLIC_SITE_ID}-db.mana.wiki/api/${collectionId}/${entryId}?depth=${depth}`
+   );
 };
 
 export const meta: V2_MetaFunction = ({ matches, data }) => {
