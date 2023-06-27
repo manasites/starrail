@@ -37,7 +37,7 @@ import { fetchWithCache } from "~/utils/cache.server";
 
 
 const { EntryContentEmbed } = lazily(
-  () => import("~/modules/collections/components/EntryContentEmbed")
+  () => import("~/modules/collections/components/EntryContentEmbed.tsx")
 );
 
 export { meta };
