@@ -24,9 +24,6 @@ import { Story } from "~/_custom/components/characters/Story";
 import { zx } from "zodix";
 import { z } from "zod";
 import { H2 } from "~/_custom/components/custom";
-// import { EntryContentEmbed } from "~/modules/collections/components/EntryContentEmbed";
-import { lazily } from "react-lazily";
-
 
 import type {
    Character,
@@ -35,7 +32,9 @@ import type {
 import React from "react";
 import { fetchWithCache } from "~/utils/cache.server";
 
-
+// import { EntryContentEmbed } from "~/modules/collections/components/EntryContentEmbed";
+// We'll lazy load this component so it don't appear when not being unused
+import { lazily } from "react-lazily";
 const { EntryContentEmbed } = lazily(
   () => import("~/modules/collections/components/EntryContentEmbed.tsx")
 );
