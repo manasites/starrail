@@ -10,24 +10,24 @@ import { useCallback, useMemo } from "react";
 import { createEditor } from "slate";
 import Block from "~/modules/editor/blocks/Block";
 import Leaf from "~/modules/editor/blocks/Leaf";
-import type { HomeContent } from "payload/generated-types";
-import { SoloEditor } from "../editors+/SoloEditor";
 import type { PaginatedDocs } from "payload/dist/mongoose/types";
 import {
    AdminOrStaffOrOwner,
    useIsStaffOrSiteAdminOrStaffOrOwner,
 } from "~/modules/auth";
-import {
-   Slate,
-   Editable,
-   withReact,
-   type RenderElementProps,
-} from "slate-react";
+import { withReact, type RenderElementProps } from "slate-react";
 import Tooltip from "~/components/Tooltip";
 import { isProcessing } from "~/utils";
 import { Check, History, Loader2, MoreVertical } from "lucide-react";
 import { isSiteOwnerOrAdmin } from "~/access/site";
 import { fetchWithCache } from "~/utils/cache.server";
+
+// import { SoloEditor } from "../editors+/SoloEditor";
+
+//we'll lazy load components that are only used in the editor
+import { lazily } from "react-lazily";
+const { SoloEditor } = lazily(() => import("../editors+/SoloEditor.tsx"));
+const { Slate, Editable } = lazily(() => import("slate-react"));
 
 const initialValue: CustomElement[] = [
    {
