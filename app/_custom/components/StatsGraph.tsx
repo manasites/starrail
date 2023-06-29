@@ -26,18 +26,14 @@ ChartJS.register(
 // 2ci) Character Stat Graph
 // =====================================
 export type StatsType = Array<{ label: string; data: string[] }>;
-export const StatsGraph = ({ stats }: { stats: StatsType }) => {
+export const StatsGraph = ({
+   stats,
+   statsList = ["HP", "ATK", "DEF"],
+}: {
+   stats: StatsType;
+   statsList: string[]; // List of stats to display in the dropdown
+}) => {
    const [graphStat, setGraphStat] = useState("HP");
-
-   let statlist = [
-      "HP",
-      "ATK",
-      "DEF",
-      "Speed",
-      "CritRate",
-      "CritDMG",
-      "BaseAggro",
-   ];
 
    let tooltipsuffix = "";
 
@@ -153,7 +149,7 @@ export const StatsGraph = ({ stats }: { stats: StatsType }) => {
             value={graphStat}
             onChange={(event) => setGraphStat(event.target.value)}
          >
-            {statlist.map((stat) => {
+            {statsList.map((stat) => {
                return (
                   <option value={stat} key={stat}>
                      {stat}

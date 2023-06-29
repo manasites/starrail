@@ -21,7 +21,7 @@ export const CharacterStatBlock = ({ pageData }: { pageData: Character }) => {
    const rarityurl = pageData.rarity?.icon?.url;
    const pathname = pageData.path?.name;
 
-   let statlist = [
+   const statsList = [
       "HP",
       "ATK",
       "DEF",
@@ -33,7 +33,7 @@ export const CharacterStatBlock = ({ pageData }: { pageData: Character }) => {
    // =====================================
    // PREPROCESSING STEPS
    // Create an object that can be iterated through to generate data rows of stat data
-   let statobj = statlist.map((stat, i) => ({
+   let statobj = statsList.map((stat, i) => ({
       stat: stat,
       // Add stat icons eventually
       hash: null,
@@ -267,13 +267,13 @@ export const CharacterStatBlock = ({ pageData }: { pageData: Character }) => {
 
          {/* 2ci) Character Stat Graph */}
          {/* - Should include a drop down stat selector, shading between pre-post ascension breakpoints */}
-         <LazyStatsGraph stats={stats} />
+         <LazyStatsGraph stats={stats} statsList={statsList} />
 
          {/* 2d) Collapsible? Tab for Full Stats - We do want to hide this because we wanna make it more work for people to find this? 
         UPDATE: Hidden for now due to slider. CSV version still available for full stat table. */}
          {/* <Stats charData={charData} /> */}
 
-         <CSVStats statsCSV={pageData?.stats_csv} />
+         {pageData?.stats && <CSVStats statsCSV={pageData?.stats_csv} />}
 
          {/* 2e) Collapsible Tab for link to Detailed BinOutput (JSON describing detailed parameters for character skills and attacks) */}
          {/* <BinOutputLink charData={charData} /> */}

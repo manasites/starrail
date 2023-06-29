@@ -12,7 +12,13 @@ const { StatsGraph } = lazily(() => import("./StatsGraph.tsx"));
 export { StatsType };
 
 //Since the graph is hidden by default, we can lazy load it and reduce bundle size
-export const LazyStatsGraph = ({ stats }: { stats: StatsType }) => (
+export const LazyStatsGraph = ({
+   stats,
+   statsList,
+}: {
+   stats: StatsType;
+   statsList?: string[];
+}) => (
    <div className="my-1">
       <Disclosure>
          {({ open }) => (
@@ -33,7 +39,7 @@ export const LazyStatsGraph = ({ stats }: { stats: StatsType }) => (
                </Disclosure.Button>
                <Disclosure.Panel className="mb-5">
                   <Suspense fallback={<div>Loading Stats Graph...</div>}>
-                     <StatsGraph stats={stats} />
+                     <StatsGraph stats={stats} statsList={statsList} />
                   </Suspense>
                </Disclosure.Panel>
             </>
