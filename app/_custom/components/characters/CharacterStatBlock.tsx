@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Disclosure } from "@headlessui/react";
 
 import { Image } from "~/components";
@@ -91,7 +91,6 @@ export const CharacterStatBlock = ({ pageData }: { pageData: Character }) => {
                      className="object-contain"
                   />
                </div>
-
                {/* Path + Path Name ? */}
                <div
                   className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center 
@@ -105,7 +104,6 @@ export const CharacterStatBlock = ({ pageData }: { pageData: Character }) => {
                      />
                   </div>
                </div>
-
                {/* Rarity */}
                <div className="absolute bottom-4 left-4 z-20 flex h-8 items-center rounded-full bg-zinc-300 px-2 py-1 dark:bg-bg1Dark">
                   <Image options="height=32" alt="Rarity" url={rarityurl} />
@@ -293,7 +291,9 @@ export const CharacterStatBlock = ({ pageData }: { pageData: Character }) => {
                         </div>
                      </Disclosure.Button>
                      <Disclosure.Panel className="mb-5">
-                        {open && <StatGraph stats={stats} />}
+                        <Suspense fallback={<div>Loading Stats Graph...</div>}>
+                           {open && <StatGraph stats={stats} />}
+                        </Suspense>
                      </Disclosure.Panel>
                   </>
                )}

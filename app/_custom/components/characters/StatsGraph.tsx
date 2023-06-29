@@ -1,4 +1,3 @@
-import { Disclosure } from "@headlessui/react";
 import { useState } from "react";
 import { Line } from "react-chartjs-2";
 
@@ -12,7 +11,6 @@ import {
    Tooltip,
    Legend,
 } from "chart.js";
-import { BarChart2, ChevronDown } from "lucide-react";
 
 ChartJS.register(
    CategoryScale,
