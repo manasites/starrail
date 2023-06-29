@@ -25,8 +25,8 @@ ChartJS.register(
 // =====================================
 // 2ci) Character Stat Graph
 // =====================================
-type StatsType = Array<{ label: string; data: string[] }>;
-export const StatGraph = ({ stats }: { stats: StatsType }) => {
+export type StatsType = Array<{ label: string; data: string[] }>;
+export const StatsGraph = ({ stats }: { stats: StatsType }) => {
    const [graphStat, setGraphStat] = useState("HP");
 
    let statlist = [

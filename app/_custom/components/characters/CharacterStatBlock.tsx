@@ -1,16 +1,11 @@
-import { Suspense, useState } from "react";
-import { Disclosure } from "@headlessui/react";
+import { useState } from "react";
 
 import { Image } from "~/components";
 import type { Character } from "payload/generated-custom-types";
-import { BarChart2, Binary, ChevronDown } from "lucide-react";
 
-// We'll lazy load StatGraph to improve performance
-// import { StatGraph } from "./StatsGraph";
-import { lazily } from "react-lazily";
-const { StatGraph } = lazily(() => import("./StatsGraph.tsx"));
+import { LazyStatsGraph, type StatsType } from "../LazyStatsGraph.tsx";
+import { CSVStats } from "../CSVStats.tsx";
 
-type StatsType = Array<{ label: string; data: string[] }>;
 export const CharacterStatBlock = ({ pageData }: { pageData: Character }) => {
    // Cast stats to the correct type
    const stats = pageData.stats as StatsType;
@@ -272,115 +267,18 @@ export const CharacterStatBlock = ({ pageData }: { pageData: Character }) => {
 
          {/* 2ci) Character Stat Graph */}
          {/* - Should include a drop down stat selector, shading between pre-post ascension breakpoints */}
-         <div className="my-1">
-            <Disclosure>
-               {({ open }) => (
-                  <>
-                     <Disclosure.Button
-                        className="border-color bg-2 shadow-1 mb-2 flex w-full items-center
-                        gap-3 rounded-lg border px-4 py-3 font-bold shadow-sm"
-                     >
-                        <BarChart2 size={20} className="text-yellow-500" />
-                        Stat Graph
-                        <div
-                           className={`${
-                              open ? "font-bol rotate-180 transform" : ""
-                           } ml-auto inline-block `}
-                        >
-                           <ChevronDown size={28} />
-                        </div>
-                     </Disclosure.Button>
-                     <Disclosure.Panel className="mb-5">
-                        <Suspense fallback={<div>Loading Stats Graph...</div>}>
-                           {open && <StatGraph stats={stats} />}
-                        </Suspense>
-                     </Disclosure.Panel>
-                  </>
-               )}
-            </Disclosure>
-         </div>
+         <LazyStatsGraph stats={stats} />
 
          {/* 2d) Collapsible? Tab for Full Stats - We do want to hide this because we wanna make it more work for people to find this? 
         UPDATE: Hidden for now due to slider. CSV version still available for full stat table. */}
          {/* <Stats charData={charData} /> */}
 
-         <CSVStats charData={pageData} />
+         <CSVStats statsCSV={pageData?.stats_csv} />
 
          {/* 2e) Collapsible Tab for link to Detailed BinOutput (JSON describing detailed parameters for character skills and attacks) */}
          {/* <BinOutputLink charData={charData} /> */}
       </>
    );
-};
-
-//Write a generic disclosure to wrap around the collapsible sections
-const DisclosureWrapper = ({ children }: { children: React.ReactNode }) => (
-   <div className="my-1">
-      <Disclosure>
-         {({ open }) => (
-            <>
-               <Disclosure.Button
-                  className="border-color bg-2 shadow-1 mb-2 flex w-full items-center
-                        gap-3 rounded-lg border px-4 py-3 font-bold shadow-sm"
-               >
-                  <BarChart2 size={20} className="text-yellow-500" />
-                  Stat Graph
-                  <div
-                     className={`${
-                        open ? "font-bol rotate-180 transform" : ""
-                     } ml-auto inline-block `}
-                  >
-                     <ChevronDown size={28} />
-                  </div>
-               </Disclosure.Button>
-               <Disclosure.Panel className="mb-5">{children}</Disclosure.Panel>
-            </>
-         )}
-      </Disclosure>
-   </div>
-);
-
-// =====================================
-// Collapsible CSV Stat Text box
-// =====================================
-const CSVStats = ({ charData }: { charData: Character }) => {
-   const data = charData;
-   if (data.stats != undefined && data.stats.length != 0) {
-      return (
-         <>
-            <Disclosure>
-               {({ open }) => (
-                  <>
-                     <Disclosure.Button
-                        className="border-color bg-2 shadow-1 mb-2 flex w-full items-center
-                        gap-3 rounded-lg border px-4 py-3 font-bold shadow-sm"
-                     >
-                        <Binary size={20} className="text-yellow-500" />
-                        Raw Stats for all Levels
-                        <div
-                           className={`${
-                              open ? "font-bol rotate-180 transform" : ""
-                           } ml-auto inline-block `}
-                        >
-                           <ChevronDown size={28} />
-                        </div>
-                     </Disclosure.Button>
-                     <Disclosure.Panel className="">
-                        <div
-                           contentEditable="true"
-                           dangerouslySetInnerHTML={{
-                              __html: data.stats_csv ?? "",
-                           }}
-                           className="border-color bg-2 h-24 overflow-y-scroll rounded-md border px-4 py-3 font-mono"
-                        ></div>
-                     </Disclosure.Panel>
-                  </>
-               )}
-            </Disclosure>
-         </>
-      );
-   } else {
-      return <></>;
-   }
 };
 
 // =====================================
