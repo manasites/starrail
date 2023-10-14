@@ -80,8 +80,6 @@ export async function loader({
 export default function CharacterEntry() {
    const { entryDefault, skillTreeData } = useLoaderData<typeof loader>();
 
-   console.log(entryDefault);
-
    const links = [
       { name: "Traces", link: "traces" },
       { name: "Skill Tree", link: "tree" },
@@ -90,8 +88,6 @@ export default function CharacterEntry() {
       { name: "Gallery", link: "gallery" },
       { name: "Profile", link: "profile" },
    ];
-
-   return <div>test</div>;
 
    return (
       <Entry>
