@@ -2,14 +2,13 @@ import { Suspense, useState } from "react";
 
 import { offset, shift } from "@floating-ui/react";
 import { Float } from "@headlessui-float/react";
-import { redirect } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import type {
    ActionFunctionArgs,
    LoaderFunctionArgs,
    MetaFunction,
 } from "@remix-run/node";
 import { Await, useFetcher, useLoaderData } from "@remix-run/react";
-import { deferIf } from "defer-if";
 import { EyeOff, Image, ImageMinus, Trash2 } from "lucide-react";
 import type { Payload } from "payload";
 import { select } from "payload-query";
@@ -33,7 +32,6 @@ import {
    commitSession,
    getMultipleFormData,
    getSession,
-   isNativeSSR,
    setErrorMessage,
    setSuccessMessage,
    slugify,
@@ -61,8 +59,6 @@ export async function loader({
       p: z.string(),
    });
 
-   const { isMobileApp } = isNativeSSR(request);
-
    const { post, isChanged, versions } = await fetchPost({
       p,
       page,
@@ -71,7 +67,7 @@ export async function loader({
       user,
    });
 
-   return await deferIf({ post, isChanged, versions, siteId }, isMobileApp);
+   return await json({ post, isChanged, versions, siteId });
 }
 
 export const meta: MetaFunction<typeof loader> = ({
@@ -440,15 +436,32 @@ export async function action({
          const allPosts = await payload.find({
             collection: "posts",
             where: {
-               "site.slug": {
-                  equals: siteId,
-               },
-               slug: {
-                  equals: newSlug,
-               },
-               id: {
-                  not_equals: currentPost.id,
-               },
+               and: [
+                  {
+                     "site.slug": {
+                        equals: siteId,
+                     },
+                     //Check existing slug or id
+                     or: [
+                        {
+                           slug: {
+                              equals: newSlug,
+                           },
+                        },
+                        {
+                           id: {
+                              equals: newSlug,
+                           },
+                        },
+                     ],
+                  },
+                  {
+                     //We don't want to include the current post when checking
+                     id: {
+                        not_equals: currentPost.id,
+                     },
+                  },
+               ],
             },
             draft: true,
             overrideAccess: false,
