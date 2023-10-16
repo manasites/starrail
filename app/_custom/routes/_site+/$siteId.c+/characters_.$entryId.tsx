@@ -54,8 +54,8 @@ export async function loader({
          body: JSON.stringify({
             query: CharacterQuery,
             variables: {
-               id: entryId, //this has to be String! for some reason
-               charId: entryId, //this has to be JSON for some reason
+               id: entry.id, //this has to be String! for some reason
+               charId: entry.id, //this has to be JSON for some reason
             },
          }),
       },
