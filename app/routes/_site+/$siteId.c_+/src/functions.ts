@@ -45,6 +45,41 @@ export const meta: MetaFunction = ({
       },
    ];
 };
+
+export const customEntryMeta: MetaFunction = ({
+   matches,
+   data,
+}: {
+   matches: any;
+   data: any;
+}) => {
+   const siteName = matches.find(
+      ({ id }: { id: string }) => id === "routes/_site+/$siteId+/_layout",
+   )?.data?.site?.name;
+   return [
+      {
+         title: `${data?.entry.name} | ${data?.entry?.collectionName} - ${siteName}`,
+      },
+   ];
+};
+
+export const customListMeta: MetaFunction = ({ matches }: { matches: any }) => {
+   const site = matches.find(
+      ({ id }: { id: string }) => id === "routes/_site+/$siteId+/_layout",
+   )?.data?.site;
+
+   const collectionId = matches[2].pathname.split("/")[3];
+
+   const collection = site?.collections?.find(
+      (collection: any) => collection.slug === collectionId,
+   );
+   return [
+      {
+         title: `${collection.name} | ${site.name}`,
+      },
+   ];
+};
+
 export async function getEmbeddedContent({
    user,
    payload,
