@@ -30,6 +30,8 @@ import {
 } from "~/routes/_site+/$siteId.c_+/src/functions";
 import { fetchWithCache } from "~/utils/cache.server";
 
+export { ErrorBoundary } from "~/components/ErrorBoundary";
+
 export { meta };
 
 export async function loader({
@@ -44,7 +46,7 @@ export async function loader({
       user,
    });
 
-   const { data, errors } = await fetchWithCache(
+   const { data, errors } = await fetch(
       `https://${settings.siteId}-db.${settings.domain}/api/graphql`,
       {
          method: "POST",
@@ -67,8 +69,9 @@ export async function loader({
    }
    return json({
       entry,
-      entryDefault: data.character as Character,
-      skillTreeData: data.skillTree.docs as SkillTreeType[],
+      data,
+      entryDefault: data?.character as Character,
+      skillTreeData: data?.skillTree.docs as SkillTreeType[],
    });
 }
 
