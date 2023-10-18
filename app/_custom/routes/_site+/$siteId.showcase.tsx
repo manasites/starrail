@@ -36,8 +36,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/Tooltip";
 import { isLoading } from "~/utils";
 import { fetchWithCache } from "~/utils/cache.server";
 
-export { ErrorBoundary } from "~/components/ErrorBoundary";
-
 // Sample data, will import via API for real case
 // import { showcaseSample } from "./showcaseSample";
 
@@ -1886,7 +1884,7 @@ function intersect(a: any, b: any) {
 }
 
 const QUERY_SHOWCASE = `
-query ($relicIdList: [String!], $characterIdList: [String!], $lightconeIdList: [String!], $skillTreeIdList: [String!], $playerIconId: String!) {
+query ($relicIdList: [String!], $characterIdList: [String!], $lightconeIdList: [String!], $skillTreeIdList: [JSON], $playerIconId: String!) {
    relics: Relics(where: { relic_id: {in: $relicIdList } }, limit: 100) {
       docs {
        relic_id
