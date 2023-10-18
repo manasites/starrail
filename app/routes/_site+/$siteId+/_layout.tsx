@@ -353,6 +353,11 @@ const fetchSite = async ({
                      id
                      name
                      slug
+                     sections {
+                        id
+                        name
+                        showTitle
+                     }
                      customDatabase
                      icon {
                         id
