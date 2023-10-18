@@ -55,8 +55,7 @@ export async function loader({
          body: JSON.stringify({
             query: CharacterQuery,
             variables: {
-               id: entry.id, //this has to be String! for some reason
-               charId: entry.id, //this has to be JSON for some reason
+               charId: entry.id,
             },
          }),
       },
@@ -147,8 +146,8 @@ export default function CharacterEntry() {
 }
 
 const CharacterQuery = `
-query ($id: String!, $charId: JSON) {
- character: Character(id: $id) {
+query ($charId: String!) {
+ character: Character(id: $charId) {
    id
    name
    image_draw {
