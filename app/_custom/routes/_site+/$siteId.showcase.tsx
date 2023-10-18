@@ -22,7 +22,6 @@ import {
    Lock,
    RefreshCcw,
    X,
-   CircleDot,
    Download,
    Hourglass,
 } from "lucide-react";

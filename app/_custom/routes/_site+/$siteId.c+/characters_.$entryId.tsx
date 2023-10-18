@@ -30,7 +30,6 @@ import {
 import { fetchWithCache } from "~/utils/cache.server";
 
 export { ErrorBoundary } from "~/components/ErrorBoundary";
-
 export { customEntryMeta as meta };
 
 export async function loader({
@@ -67,7 +66,6 @@ export async function loader({
    }
    return json({
       entry,
-      data,
       entryDefault: data?.character as Character,
       skillTreeData: data?.skillTree.docs as SkillTreeType[],
    });
