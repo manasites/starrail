@@ -67,7 +67,7 @@ export async function loader({
    return json({
       entry,
       entryDefault: data?.character as Character,
-      skillTreeData: data?.skillTree.docs as SkillTreeType[],
+      skillTreeData: data?.skillTree?.docs as SkillTreeType[],
    });
 }
 
