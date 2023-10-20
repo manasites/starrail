@@ -45,7 +45,7 @@ export async function loader({
    });
 
    const { data, errors } = await fetchWithCache(
-      `https://${settings.siteId}-db.${settings.domain}/api/graphql`,
+      `http://localhost:4000/api/graphql`,
       {
          method: "POST",
          headers: {
