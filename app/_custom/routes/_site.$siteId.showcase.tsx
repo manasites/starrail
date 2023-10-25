@@ -15,17 +15,7 @@ import {
    useSearchParams,
 } from "@remix-run/react";
 import { toPng } from "html-to-image";
-import {
-   ArrowRight,
-   Info,
-   Loader2,
-   Lock,
-   RefreshCcw,
-   X,
-   CircleDot,
-   Download,
-   Hourglass,
-} from "lucide-react";
+
 import { z } from "zod";
 import { zx } from "zodix";
 
@@ -36,6 +26,7 @@ import { Image } from "~/components";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/Tooltip";
 import { isLoading } from "~/utils";
 import { fetchWithCache } from "~/utils/cache.server";
+import { Icon } from "~/components/Icon";
 
 // Sample data, will import via API for real case
 // import { showcaseSample } from "./showcaseSample";
@@ -161,7 +152,11 @@ export default function Showcase() {
                      to="/starrail/showcase?uid=700043897"
                   >
                      <span>Show me an example...</span>
-                     <ArrowRight className="text-blue-500" size={20} />
+                     <Icon
+                        name="arrow-right"
+                        className="text-blue-500"
+                        size={20}
+                     />
                   </Link>
                </div>
             </div>
@@ -1021,7 +1016,8 @@ const CharacterInfo = ({
                                           className="absolute object-contain opacity-30"
                                        />
                                        <div className="mt-2.5 flex items-center justify-center">
-                                          <Lock
+                                          <Icon
+                                             name="lock"
                                              className="text-white"
                                              size={18}
                                           />
@@ -1294,7 +1290,10 @@ const CharacterInfo = ({
                      >
                         <Tooltip>
                            <TooltipTrigger>
-                              <Info className="text-1 h-5 w-5 laptop:h-4 laptop:w-4" />
+                              <Icon
+                                 name="info"
+                                 className="text-1 h-5 w-5 laptop:h-4 laptop:w-4"
+                              />
                            </TooltipTrigger>
                            <TooltipContent>
                               <div className="w-60 text-left font-normal">
@@ -1555,7 +1554,7 @@ const CharacterInfo = ({
             aria-label="Download"
             title="Download"
          >
-            <Download size={18} />
+            <Icon name="download" size={18} />
             <span>Download</span>
          </button>
          <Form method="post">
@@ -1569,9 +1568,9 @@ const CharacterInfo = ({
                title={disableRefresh ? "On cooldown..." : "Refresh"}
             >
                {disableRefresh ? (
-                  <Hourglass size={18} />
+                  <Icon name="hourglass" size={18} />
                ) : (
-                  <RefreshCcw size={18} />
+                  <Icon name="refresh-ccw" size={18} />
                )}
                <span>Refresh</span>
             </button>
@@ -1819,7 +1818,7 @@ const InputUIDNote = ({ uid }: { uid: any }) => {
                      setInputUID("");
                   }}
                >
-                  <X size={14} className="text-red-400" />
+                  <Icon name="x" size={14} className="text-red-400" />
                </button>
             )}
          </div>
@@ -1836,7 +1835,10 @@ const InputUIDNote = ({ uid }: { uid: any }) => {
                }}
             >
                {isSearching ? (
-                  <Loader2 className="h-6 w-6 animate-spin text-white" />
+                  <Icon
+                     name="loader-2"
+                     className="h-6 w-6 animate-spin text-white"
+                  />
                ) : (
                   "Submit"
                )}
