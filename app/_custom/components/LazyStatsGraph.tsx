@@ -29,12 +29,9 @@ export const LazyStatsGraph = ({
                   className="border-color-sub bg-2-sub shadow-1 mb-2 flex w-full items-center
                          gap-3 rounded-lg border px-4 py-3 font-bold shadow-sm"
                >
-                  <Icon
-                     name="bar-chart-2"
-                     size={20}
-                     className="text-zinc-500"
-                  />
-                  Stat Graph
+                  <Icon name="bar-chart-2" size={20} className="text-zinc-500">
+                     Stat Graph
+                  </Icon>
                   <div
                      className={`${
                         open ? "font-bol rotate-180 transform" : ""

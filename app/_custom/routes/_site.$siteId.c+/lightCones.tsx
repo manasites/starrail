@@ -243,12 +243,9 @@ const LightConeList = ({ chars }: any) => {
          {/* Sort Options */}
          <div className="flex items-center justify-between py-3">
             <div className="text-1 flex items-center gap-2 text-sm font-bold">
-               <Icon
-                  name="arrow-down-wide-narrow"
-                  size={16}
-                  className="text-zinc-500"
-               />
-               Sort
+               <Icon name="sort" size={16} className="text-zinc-500">
+                  Sort
+               </Icon>
             </div>
             <div className="flex items-center gap-2">
                {sortOptions.map((opt) => (

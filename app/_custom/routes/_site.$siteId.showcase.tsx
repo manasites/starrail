@@ -15,7 +15,6 @@ import {
    useSearchParams,
 } from "@remix-run/react";
 import { toPng } from "html-to-image";
-
 import { z } from "zod";
 import { zx } from "zodix";
 
@@ -23,10 +22,10 @@ import { settings } from "mana-config";
 import type { Material } from "payload/generated-custom-types";
 import { fetchShowcase } from "~/_custom/showcase-cache.server";
 import { Image } from "~/components";
+import { Icon } from "~/components/Icon";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/Tooltip";
 import { isLoading } from "~/utils";
 import { fetchWithCache } from "~/utils/cache.server";
-import { Icon } from "~/components/Icon";
 
 // Sample data, will import via API for real case
 // import { showcaseSample } from "./showcaseSample";
