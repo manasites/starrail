@@ -1553,8 +1553,9 @@ const CharacterInfo = ({
             aria-label="Download"
             title="Download"
          >
-            <Icon name="download" size={18} />
-            <span>Download</span>
+            <Icon name="download" size={18}>
+               Download
+            </Icon>
          </button>
          <Form method="post">
             <button
