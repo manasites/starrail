@@ -1921,10 +1921,10 @@
     vite "^4.4.9"
     vite-plugin-virtual "^0.2.0"
 
-"@payloadcms/db-mongodb@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@payloadcms/db-mongodb/-/db-mongodb-1.0.4.tgz#857690045c6e8d2d7a4216931b909fc20bef6857"
-  integrity sha512-AkCVp407Y210TPt0imtUrtBxKrvlSgsbwZ9GrJXL8RACo3P86e4N+4wPlHKSF74w/rvagNDy151P5pvmmiRLYQ==
+"@payloadcms/db-mongodb@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@payloadcms/db-mongodb/-/db-mongodb-1.0.5.tgz#febfe41b5703776668b02bf7582b234ab311863d"
+  integrity sha512-Gdq0LyyQwjt+kdDhQ8oAMgbp0M4l4/1eQh+//e4BPL6vmJEMx2HNLnKot5EIWDkeSFuU7P45t7phWwe7mq4u7g==
   dependencies:
     bson-objectid "2.0.4"
     deepmerge "4.3.1"
@@ -1942,10 +1942,10 @@
   dependencies:
     range-parser "^1.2.1"
 
-"@payloadcms/richtext-slate@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@payloadcms/richtext-slate/-/richtext-slate-1.0.7.tgz#472103e01d93b9395e2463ee265b6b18a672bba7"
-  integrity sha512-DJUqw8sk5wBJYAm2YxUiC0bNAL/66+QoM/mK1X+1HOnko6GPunw37qFzj7jMr/Jciije9CWGx7J+ix11o6N5aw==
+"@payloadcms/richtext-slate@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@payloadcms/richtext-slate/-/richtext-slate-1.1.0.tgz#72b94b06730f16012d7bb3e9eb48d778fe94d339"
+  integrity sha512-0rlAqJa69QVeM40OO/DM7Spd/I57z+20I4R6xoV1DVk+ikQRLYg+Wpko1Sha/jZlLYuPaLOH+mE7xiwwm+au1w==
   dependencies:
     "@faceless-ui/modal" "2.0.1"
     i18next "22.5.1"
@@ -8909,10 +8909,10 @@ payload-query@^1.0.2:
   dependencies:
     ts-powertools "0.0.3"
 
-payload@^2.0.12:
-  version "2.0.12"
-  resolved "https://registry.yarnpkg.com/payload/-/payload-2.0.12.tgz#5a630efc01813a91766c86dcf648df59b9482f00"
-  integrity sha512-M3x9Y53ukiflZC4STri/34Gx4VjMk+UjuLc38dQRiCLPFGXEuqPfFFdt+c1Lh4ZeTQmMlWzzJcRMQ00tK+kWYg==
+payload@^2.0.14:
+  version "2.0.14"
+  resolved "https://registry.yarnpkg.com/payload/-/payload-2.0.14.tgz#a5f2431ce1293a0764ceb34afeed5b490f93f0df"
+  integrity sha512-pXQcX9T2dtR9h5enHqIn/kt384eNPe0nZVBS/wUnYW1LXW/5f74Esi2CsNZHV6TTyAElw9EheRRiESJ37WwHTQ==
   dependencies:
     "@date-io/date-fns" "2.16.0"
     "@dnd-kit/core" "6.0.8"
