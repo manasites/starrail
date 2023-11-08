@@ -25,12 +25,35 @@ import { fetchWithCache } from "~/utils/cache.server";
 
 export { customEntryMeta as meta };
 
+async function fetchGQL(query: string, variables?: Record<string, any>) {
+   const { data, errors } = await fetchWithCache(
+      `http://localhost:4000/api/graphql`,
+      {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify({
+            query,
+            variables,
+         }),
+      },
+   );
+
+   if (errors) {
+      console.error(JSON.stringify(errors)); // eslint-disable-line no-console
+      // throw new Error();
+   }
+
+   return data;
+}
+
 export async function loader({
    context: { payload, user },
    params,
    request,
 }: LoaderFunctionArgs) {
-   const { entry } = await fetchEntry({
+   const fetchCharacterData = fetchEntry({
       payload,
       params,
       request,
@@ -40,26 +63,14 @@ export async function loader({
       },
    });
 
-   const { data, errors } = await fetchWithCache(
-      `http://localhost:4000/api/graphql`,
-      {
-         method: "POST",
-         headers: {
-            "Content-Type": "application/json",
-         },
-         body: JSON.stringify({
-            query: SkillTreeQuery,
-            variables: {
-               charId: entry.id,
-            },
-         }),
-      },
-   );
+   const fetchSkillTreeData = fetchGQL(SkillTreeQuery, {
+      charId: params.entryId,
+   });
 
-   if (errors) {
-      console.error(JSON.stringify(errors)); // eslint-disable-line no-console
-      // throw new Error();
-   }
+   const [{ entry }, data] = await Promise.all([
+      fetchCharacterData,
+      fetchSkillTreeData,
+   ]);
 
    return json({
       entry,
