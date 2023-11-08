@@ -15,11 +15,11 @@ import {
    useSearchParams,
 } from "@remix-run/react";
 import { toPng } from "html-to-image";
+import type { Material } from "payload/generated-custom-types";
 import { z } from "zod";
 import { zx } from "zodix";
 
 import { settings } from "mana-config";
-import type { Material } from "payload/generated-custom-types";
 import { fetchShowcase } from "~/_custom/showcase-cache.server";
 import { Image } from "~/components";
 import { Icon } from "~/components/Icon";
@@ -32,7 +32,7 @@ import { fetchWithCache } from "~/utils/cache.server";
 
 async function fetchGQL(query: string, variables?: Record<string, any>) {
    const { data, errors } = await fetchWithCache(
-      `http://localhost:4000/api/graphql`,
+      `https://${settings.siteId}-db.${settings.domain}/api/graphql`,
       {
          method: "POST",
          headers: {
