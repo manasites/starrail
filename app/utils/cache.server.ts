@@ -1,8 +1,11 @@
 import { cachified, lruCacheAdapter } from "cachified";
-import type { CreateReporter, CacheMetadata, CacheEntry } from "cachified";
+import type { CreateReporter, CacheEntry } from "cachified";
+import { request as gqlRequest } from "graphql-request";
 import { LRUCache } from "lru-cache";
 
 import { remember } from "./remember.server";
+
+export { gql } from "graphql-request";
 
 // Setup an in memory lru-cache for api calls, this will be cleared on server restart.
 export const lruCache = remember(
@@ -11,7 +14,7 @@ export const lruCache = remember(
       // max: 250, // maximum number of items to store in the cache
       sizeCalculation: (value) => JSON.stringify(value).length,
       maxSize: 100 * 1024 * 1024, // 100MB
-      ttl: 5 * 60 * 1000, // how long to live in ms
+      // ttl: 5 * 60 * 1000, // how long to live in ms
    }),
 );
 
@@ -34,12 +37,37 @@ export async function fetchWithCache(
       ? (init.body as string).replace(/\s/g, "").replace(/\n/g, " ")
       : url;
 
-   return await cachified({
+   return cachified<any>({
       cache,
       key,
       async getFreshValue() {
          const response = await fetch(url, init);
          return response.json();
+      },
+      ttl: ttl ?? 300_000, // how long to live in ms
+      swr: 365 * 24 * 60 * 60 * 1000, // allow stale items to be returned until they are removed
+      //checkValue  // implement a type check
+      // fallbackToCache: true,
+      // staleRefreshTimeout
+      reporter: verboseReporter(),
+   });
+}
+
+//Instead of native fetch, we'll use gqlRequest from "graphql-request" to make the request.
+export async function gqlRequestWithCache(
+   url: string,
+   query: string,
+   variables: any,
+   ttl?: number,
+) {
+   const key = `${url}${query}${JSON.stringify(variables)}`;
+
+   return cachified<any>({
+      cache,
+      key,
+      async getFreshValue() {
+         const response = await gqlRequest(url, query, variables);
+         return response;
       },
       ttl: ttl ?? 300_000, // how long to live in ms
       swr: 365 * 24 * 60 * 60 * 1000, // allow stale items to be returned until they are removed
@@ -63,11 +91,17 @@ export async function cacheThis<T>(func: () => Promise<T>, ttl?: number) {
    // if the function is payload api, we'll use the body instead
    key = key.split("(")?.slice(2)?.join("(") ?? key;
 
+   console.log(key);
+
    return await cachified({
       cache,
       key,
       async getFreshValue() {
-         return await func();
+         const value = await func();
+
+         console.log(value);
+
+         return value;
       },
       ttl: ttl ?? 300_000, // how long to live in ms
       swr: 365 * 24 * 60 * 60 * 1000, // allow stale items to be returned until they are removed
@@ -120,13 +154,7 @@ export async function cacheWithSelect<T>(
 }
 
 export function verboseReporter<T>(): CreateReporter<T> {
-   return ({ key, fallbackToCache, forceFresh, metadata, cache }) => {
-      const cacheName =
-         cache.name ||
-         cache
-            .toString()
-            .toString()
-            .replace(/^\[object (.*?)]$/, "$1");
+   return ({ key, fallbackToCache, forceFresh }) => {
       let cached: unknown;
       let freshValue: unknown;
       let getFreshValueStartTs: number;
@@ -174,10 +202,6 @@ export function verboseReporter<T>(): CreateReporter<T> {
                      `Getting a fresh value for this took ${formatDuration(
                         totalTime,
                      )}.`,
-                     `Thereby exceeding caching time of ${formatCacheTime(
-                        metadata,
-                        formatDuration,
-                     )}`,
                   );
                }
                break;
@@ -218,26 +242,3 @@ export function verboseReporter<T>(): CreateReporter<T> {
    };
 }
 const formatDuration = (ms: number) => `${Math.round(ms)}ms`;
-
-function formatCacheTime(
-   metadata: CacheMetadata,
-   formatDuration: (duration: number) => string,
-) {
-   const swr = staleWhileRevalidate(metadata);
-   if (metadata.ttl == null || swr == null) {
-      return `forever${
-         metadata.ttl != null
-            ? ` (revalidation after ${formatDuration(metadata.ttl)})`
-            : ""
-      }`;
-   }
-
-   return `${formatDuration(metadata.ttl)} + ${formatDuration(swr)} stale`;
-}
-
-export function staleWhileRevalidate(metadata: CacheMetadata): number | null {
-   return (
-      (typeof metadata.swr === "undefined" ? metadata.swv : metadata.swr) ||
-      null
-   );
-}
