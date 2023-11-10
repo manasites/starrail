@@ -91,17 +91,11 @@ export async function cacheThis<T>(func: () => Promise<T>, ttl?: number) {
    // if the function is payload api, we'll use the body instead
    key = key.split("(")?.slice(2)?.join("(") ?? key;
 
-   console.log(key);
-
    return await cachified({
       cache,
       key,
       async getFreshValue() {
-         const value = await func();
-
-         console.log(value);
-
-         return value;
+         return await func();
       },
       ttl: ttl ?? 300_000, // how long to live in ms
       swr: 365 * 24 * 60 * 60 * 1000, // allow stale items to be returned until they are removed
