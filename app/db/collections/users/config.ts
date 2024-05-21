@@ -136,11 +136,22 @@ export const Users: CollectionConfig = {
          type: "relationship",
          relationTo: "sites",
          hasMany: true,
+         access: {
+            read: isStaffOrSelf,
+         },
       },
       {
          name: "avatar",
          type: "upload",
          relationTo: "images",
+      },
+      {
+         name: "apiKey",
+         type: "text",
+         label: "the api key",
+         access: {
+            read: () => false,
+         },
       },
    ],
 };

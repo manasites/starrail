@@ -255,6 +255,7 @@ export const Sites: CollectionConfig = {
          type: "relationship",
          relationTo: "users",
          hasMany: false,
+         maxDepth: 1,
          access: {
             update: isStaffFieldLevel,
          },
