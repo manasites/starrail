@@ -1,6 +1,11 @@
 import type { CollectionConfig } from "payload/types";
 
-import { isStaff, isStaffFieldLevel, isStaffOrSelf } from "./access";
+import {
+   isStaff,
+   isStaffFieldLevel,
+   isStaffOrSelf,
+   isStaffOrSelfFieldLevel,
+} from "./access";
 
 export const serverEnv = process.env.NODE_ENV;
 export const usersSlug = "users";
@@ -86,7 +91,7 @@ export const Users: CollectionConfig = {
       create: () => true,
       delete: isStaffOrSelf,
       update: isStaffOrSelf,
-      //@ts-ignore
+      // @ts-expect-error - this is a payload type bug
       admin: isStaff,
    },
    fields: [
@@ -110,7 +115,7 @@ export const Users: CollectionConfig = {
          required: true,
          unique: true,
          access: {
-            read: isStaffFieldLevel,
+            read: isStaffOrSelfFieldLevel,
          },
       },
       {
@@ -139,7 +144,7 @@ export const Users: CollectionConfig = {
          relationTo: "sites",
          hasMany: true,
          access: {
-            read: isStaffOrSelf,
+            read: isStaffOrSelfFieldLevel,
          },
       },
       {
@@ -150,9 +155,22 @@ export const Users: CollectionConfig = {
       {
          name: "apiKey",
          type: "text",
-         label: "the api key",
          access: {
             read: () => false,
+         },
+      },
+      {
+         name: "enableAPIKey",
+         type: "text",
+         access: {
+            read: () => false,
+         },
+      },
+      {
+         name: "loginAttempts",
+         type: "number",
+         access: {
+            read: isStaffOrSelfFieldLevel,
          },
       },
    ],
