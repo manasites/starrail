@@ -292,6 +292,7 @@ const LightConeList = ({ chars }: any) => {
 };
 
 const EntryWithDescription = ({ char }: any) => {
+   console.log(char);
    const pathsmall = char?.path?.icon?.url;
    const rarityurl = char?.rarity?.icon?.url;
    const raritynum = char?.rarity?.display_number;
@@ -350,7 +351,7 @@ const EntryIconOnly = ({ char }: any) => {
    const pathsmall = char?.path?.icon?.url;
    const rarityurl = char?.rarity?.icon?.url;
    const raritynum = char?.rarity?.display_number;
-   const cid = char?.id;
+   const cid = char?.slug ?? char?.id;
 
    return (
       <>
@@ -404,6 +405,7 @@ const QUERY_LIGHTCONES = gql`
          docs {
             lightcone_id
             name
+            slug
             rarity {
                id
                icon {

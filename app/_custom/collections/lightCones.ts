@@ -1,10 +1,14 @@
 import type { CollectionConfig } from "payload/types";
 
 import { isStaff } from "../../db/collections/users/users.access";
+import {
+   afterDeleteSearchSyncHook,
+   afterChangeSearchSyncHook,
+} from "../hooks/search-hooks";
 
 export const LightCones: CollectionConfig = {
    slug: "lightCones",
-   labels: { singular: "lightCone", plural: "lightCones" },
+   labels: { singular: "Light Cone", plural: "Light Cones" },
    admin: {
       group: "Custom",
       useAsTitle: "name",
@@ -14,6 +18,10 @@ export const LightCones: CollectionConfig = {
       read: () => true,
       update: isStaff, //udpate in future to allow site admins as well
       delete: isStaff, //udpate in future to allow site admins as well
+   },
+   hooks: {
+      afterDelete: [afterDeleteSearchSyncHook],
+      afterChange: [afterChangeSearchSyncHook],
    },
    fields: [
       {
