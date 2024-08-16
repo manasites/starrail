@@ -5,6 +5,7 @@ import type {
    VisibilityState,
    AccessorKeyColumnDef,
    AccessorKeyColumnDefBase,
+   SortingState,
 } from "@tanstack/react-table";
 
 import { Loading } from "~/components/Loading";
@@ -46,15 +47,17 @@ export function List({
    columns,
    columnViewability,
    filters,
-   viewType,
+   defaultViewType,
    gridView,
+   defaultSort,
 }: {
    children?: ReactNode;
    columns: AccessorKeyColumnDefBase<any>[];
    filters?: TableFilters;
-   viewType: "list" | "grid";
+   defaultViewType?: "list" | "grid";
    gridView?: AccessorKeyColumnDef<any>;
    columnViewability?: VisibilityState;
+   defaultSort?: SortingState;
 }) {
    //@ts-ignore
    const { list } = useLoaderData();
@@ -99,7 +102,8 @@ export function List({
                   <Await resolve={list} errorElement={<Loading />}>
                      {(list) => (
                         <ListTable
-                           viewType={viewType}
+                           defaultSort={defaultSort}
+                           defaultViewType={defaultViewType}
                            key={collectionId}
                            data={list}
                            columns={columns}

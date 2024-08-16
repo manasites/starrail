@@ -29,23 +29,28 @@ export function ListTable({
    collection,
    columnViewability,
    filters,
-   viewType,
+   defaultViewType,
    gridView,
+   defaultSort,
 }: {
    data: any;
    columns: AccessorKeyColumnDefBase<any>[];
    collection: Collection;
    columnViewability?: VisibilityState;
-   viewType: "list" | "grid";
+   defaultViewType?: "list" | "grid";
    filters?: TableFilters;
    gridView?: AccessorKeyColumnDef<any>;
+   defaultSort?: SortingState;
 }) {
    // Table state definitions
-   const [tabletData] = useState(() => [...data?.listData?.docs]);
+   const [tableData] = useState(() => [...data?.listData?.docs]);
+
    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
    const [globalFilter, setGlobalFilter] = useState("");
-   const [viewMode, setViewMode] = useState(viewType ?? "list");
-   const [sorting, setSorting] = useState<SortingState>([]);
+   const [viewMode, setViewMode] = useState(
+      defaultViewType ?? collection.defaultViewType ?? "list",
+   );
+   const [sorting, setSorting] = useState<SortingState>(defaultSort ?? []);
    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
       columnViewability ?? {},
    );
@@ -53,7 +58,6 @@ export function ListTable({
       pageIndex: 0,
       pageSize: 60,
    });
-
    // Add grid view column to the beginning of the columns array if exists
    const updatedColumns =
       gridView && viewMode === "grid"
@@ -61,7 +65,7 @@ export function ListTable({
          : columns;
 
    const table = useReactTable({
-      data: tabletData,
+      data: tableData,
       columns: updatedColumns,
       filterFns: {},
       state: {
