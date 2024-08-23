@@ -14,6 +14,7 @@ import { ColumnFour } from "./_components/Column-4";
 import { GAScripts } from "./_components/GAScripts";
 import { MobileHeader } from "./_components/MobileHeader";
 import { RampInit } from "./_components/RampInit";
+import { AdUnit } from "./_components/RampUnit";
 import { SiteHeader } from "./_components/SiteHeader";
 import { fetchSite } from "./_utils/fetchSite.server";
 
@@ -42,7 +43,7 @@ export default function SiteLayout() {
          <MobileHeader />
          <main
             className="laptop:grid laptop:min-h-screen laptop:auto-cols-[70px_60px_1fr_334px] 
-           laptop:grid-flow-col desktop:auto-cols-[70px_230px_1fr_334px]"
+           laptop:grid-flow-col desktop:auto-cols-[70px_230px_1fr_334px] max-laptop:mb-[50px] max-laptop:border-b max-laptop:border-color"
          >
             <ColumnOne />
             <ColumnTwo
@@ -66,6 +67,15 @@ export default function SiteLayout() {
                </>
             )}
          </ClientOnly>
+         <AdUnit
+            className="fixed bottom-0 left-0 w-full h-[50px] z-50 bg-3 flex items-center justify-center"
+            enableAds={site?.enableAds}
+            adType={{
+               tablet: "leaderboard_btf",
+               mobile: "leaderboard_btf",
+            }}
+            selectorId="mobileBottomSticky"
+         />
       </>
    );
 }
