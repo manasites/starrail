@@ -1,7 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useState } from "react";
 
-import { Partytown } from "@builder.io/partytown/react";
 import type {
    MetaFunction,
    LinksFunction,
@@ -16,7 +15,6 @@ import {
    Outlet,
    Scripts,
    useLoaderData,
-   useMatches,
 } from "@remix-run/react";
 import splideCSS from "@splidejs/splide/dist/css/splide-core.min.css";
 import { useTranslation } from "react-i18next";
@@ -26,7 +24,6 @@ import { getToast } from "remix-toast";
 import { Toaster, toast as notify } from "sonner";
 
 import customStylesheetUrl from "~/_custom/styles.css";
-import type { Site } from "~/db/payload-types";
 import fonts from "~/styles/fonts.css";
 import { ClientHintCheck, getHints, useTheme } from "~/utils/client-hints";
 import { i18nextServer } from "~/utils/i18n/i18next.server";
@@ -37,6 +34,7 @@ import { ScrollRestoration } from "./components/ScrollRestoration";
 import { settings } from "./config";
 import { getSiteSlug } from "./routes/_site+/_utils/getSiteSlug.server";
 import tailwindStylesheetUrl from "./styles/global.css";
+import { useSiteLoaderData } from "./utils/useSiteLoaderData";
 
 export { ErrorBoundary } from "~/components/ErrorBoundary";
 
@@ -144,9 +142,7 @@ function App() {
    useChangeLanguage(locale);
 
    //site data should live in layout, this may be potentially brittle if we shift site architecture around
-   const { site } = (useMatches()?.[1]?.data as { site: Site | null }) ?? {
-      site: null,
-   };
+   const { site } = useSiteLoaderData();
 
    // Hook to show the toasts
    useEffect(() => {
@@ -212,27 +208,6 @@ function App() {
                   rel="icon"
                   type="image/x-icon"
                   href="/favicon.ico"
-               />
-            )}
-            {process.env.NODE_ENV === "production" && !isBot && (
-               <Partytown
-                  debug={false}
-                  forward={["dataLayer.push"]}
-                  resolveUrl={(url, location, type) => {
-                     //proxy gtag requests to avoid cors issues
-                     if (
-                        type === "script" &&
-                        url.host === "www.googletagmanager.com"
-                     ) {
-                        return new URL(
-                           location.origin +
-                              "/proxy" +
-                              url.pathname +
-                              url.search,
-                        );
-                     }
-                     return url;
-                  }}
                />
             )}
             <Meta />

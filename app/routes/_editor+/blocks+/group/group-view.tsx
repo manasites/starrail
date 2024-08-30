@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Link } from "@remix-run/react";
+import { Link, NavLink } from "@remix-run/react";
 import clsx from "clsx";
 import { Node } from "slate";
 import { ReactEditor, useSlateStatic } from "slate-react";
@@ -30,7 +30,7 @@ export function BlockGroupItemView({ element }: { element: GroupItemElement }) {
                      reloadDocument={element?.isCustomSite ?? false}
                      key={element?.id}
                      to={element?.path ?? ""}
-                     prefetch="intent"
+                     // prefetch="intent"
                      className="flex items-center w-full gap-5 group p-3"
                   >
                      {element.iconUrl && (
@@ -44,6 +44,7 @@ export function BlockGroupItemView({ element }: { element: GroupItemElement }) {
                               height={300}
                               options="height=300"
                               url={element?.iconUrl}
+                              loading="lazy"
                            />
                         </div>
                      )}
@@ -65,7 +66,7 @@ export function BlockGroupItemView({ element }: { element: GroupItemElement }) {
                      reloadDocument={element?.isCustomSite ?? false}
                      key={element?.id}
                      to={element?.path ?? ""}
-                     prefetch="intent"
+                     // prefetch="intent"
                      className="flex items-center flex-grow gap-2 p-3 group"
                   >
                      {element?.iconUrl ? (
@@ -137,15 +138,20 @@ export function BlockGroupItemView({ element }: { element: GroupItemElement }) {
                      />
                   </button>
                )}
-               <Link
+               <NavLink
                   reloadDocument={element?.isCustomSite ?? false}
                   key={element?.id}
                   to={element?.path ?? ""}
-                  prefetch="intent"
-                  className={clsx(
-                     element.groupContent ? "" : "w-full",
-                     "flex items-center justify-center flex-col p-3 bg-2-sub rounded-lg border border-color-sub shadow-sm shadow-1",
-                  )}
+                  // prefetch="intent"
+                  className={({ isActive, isPending }) =>
+                     clsx(
+                        isActive
+                           ? "bg-zinc-100 border-zinc-400/50 dark:bg-dark450 dark:border-zinc-500/50"
+                           : "bg-2-sub hover:border-zinc-300 dark:hover:border-zinc-600",
+                        element.groupContent ? "" : "w-full",
+                        "flex items-center justify-center flex-col p-3 rounded-lg border border-color-sub shadow-sm shadow-1",
+                     )
+                  }
                >
                   {element.label && (
                      <div className="flex items-center justify-center mb-2">
@@ -171,7 +177,7 @@ export function BlockGroupItemView({ element }: { element: GroupItemElement }) {
                   <div className="text-center pt-2 text-xs font-bold">
                      {element?.name}
                   </div>
-               </Link>
+               </NavLink>
             </>
          )}
          {element.groupContent && (
