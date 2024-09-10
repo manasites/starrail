@@ -107,7 +107,7 @@ export default function Post() {
 
    return (
       <>
-         <main className="mx-auto pb-3 max-tablet:px-3 pt-20 laptop:pt-6 relative">
+         <main className="mx-auto pb-3 max-tablet:px-3 pt-3 laptop:pt-6 relative">
             <PostActionBar post={post} />
             {hasAccess ? (
                <>
@@ -128,7 +128,7 @@ export default function Post() {
                   tablet: "leaderboard_atf",
                   mobile: "med_rect_atf",
                }}
-               className="my-8 mx-auto flex items-center justify-center"
+               className="my-4 mx-auto flex items-center justify-center"
                selectorId="postDesktopLeaderATF"
             />
             {hasAccess ? (

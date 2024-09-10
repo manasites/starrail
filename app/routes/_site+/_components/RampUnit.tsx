@@ -103,39 +103,51 @@ export function AdUnit({
       };
    }, [pathname]);
 
-   if (enableAds) {
-      return (
-         <>
-            <ClientOnly fallback={<></>}>
-               {() => (
-                  <>
-                     {deviceType.isMobile && adType.mobile ? (
-                        <AdUnitSelector
-                           adType={adType.mobile}
-                           selectorId={selectorId}
-                           className={className}
-                        />
-                     ) : undefined}
-                     {deviceType.isTablet && adType.tablet ? (
-                        <AdUnitSelector
-                           adType={adType.tablet}
-                           selectorId={selectorId}
-                           className={className}
-                        />
-                     ) : undefined}
-                     {deviceType.isDesktop && adType.desktop ? (
-                        <AdUnitSelector
-                           adType={adType.desktop}
-                           selectorId={selectorId}
-                           className={className}
-                        />
-                     ) : undefined}
-                  </>
-               )}
-            </ClientOnly>
-         </>
-      );
-   }
+   const [startDetect, setStartDetect] = useState(true);
+   const [detected, setDetected] = useState(false);
+
+   useEffect(() => {
+      if (startDetect) {
+         detectAdblock((enable) => {
+            setStartDetect(false);
+            setDetected(enable);
+         });
+      }
+   }, [startDetect]);
+
+   if (!enableAds) return <></>;
+
+   className = className + " h-[250px] tablet:h-[90px]"; // set Default height to fix ad cls
+
+   return (
+      <ClientOnly fallback={<div className={className} />}>
+         {() => (
+            <>
+               {!detected && deviceType.isMobile && adType.mobile ? (
+                  <AdUnitSelector
+                     adType={adType.mobile}
+                     selectorId={selectorId}
+                     className={className}
+                  />
+               ) : undefined}
+               {!detected && deviceType.isTablet && adType.tablet ? (
+                  <AdUnitSelector
+                     adType={adType.tablet}
+                     selectorId={selectorId}
+                     className={className}
+                  />
+               ) : undefined}
+               {!detected && deviceType.isDesktop && adType.desktop ? (
+                  <AdUnitSelector
+                     adType={adType.desktop}
+                     selectorId={selectorId}
+                     className={className}
+                  />
+               ) : undefined}
+            </>
+         )}
+      </ClientOnly>
+   );
 }
 
 export function AdPlaceholder({ children }: { children?: ReactNode }) {
@@ -164,4 +176,96 @@ export function AdPlaceholder({ children }: { children?: ReactNode }) {
          </div>
       );
    return children;
+}
+
+/**
+ * Check status of network connection
+ *
+ * @returns boolean
+ */
+const is_connected = () => {
+   return window.navigator.onLine;
+};
+
+function detectByGoogleAd(callback: (enable: boolean) => void) {
+   let head = document.getElementsByTagName("head")[0] as HTMLElement;
+   let script = document.createElement("script") as HTMLScriptElement;
+   let done = false;
+   let windowElement: typeof window & { adsbygoogle?: string };
+
+   if (!is_connected()) {
+      callback(false);
+      return;
+   }
+
+   const reqURL =
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+   script.setAttribute("src", reqURL);
+   script.setAttribute("type", "text/javascript");
+   script.setAttribute("charset", "utf-8");
+
+   let alreadyDetectedByAdd = false;
+   script.onload = () => {
+      if (!done) {
+         done = true;
+         script.onload = null;
+
+         if (windowElement?.adsbygoogle == "undefined") {
+            callback(true);
+            alreadyDetectedByAdd = true;
+         }
+         script.parentNode?.removeChild(script);
+      }
+   };
+
+   /** On Error. */
+   script.onerror = function () {
+      callback(true);
+   };
+
+   /** If Already Detectecd by adding scripts */
+   if (alreadyDetectedByAdd) {
+      return;
+   }
+
+   /** Async */
+   let callbacked = false;
+   const request = new XMLHttpRequest();
+   request.open("GET", reqURL, true);
+   request.onreadystatechange = () => {
+      if (
+         request.status === 0 ||
+         (request.status >= 200 && request.status < 400)
+      ) {
+         if (
+            request.responseText.toLowerCase().indexOf("ublock") > -1 ||
+            request.responseText.toLowerCase().indexOf("height:1px") > -1
+         ) {
+            if (callbacked) {
+               callback(true);
+               return;
+            }
+            callbacked = true;
+         }
+      }
+
+      if (!callbacked) {
+         callback(request.responseURL !== reqURL);
+         return;
+      }
+   };
+
+   request.send();
+   head.insertBefore(script, head.firstChild);
+}
+
+export function detectAdblock(callback: (enable: boolean) => void) {
+   /** Check Other Adblock Extensions with the help of googlead */
+   detectByGoogleAd(function (blocked) {
+      if (blocked) {
+         callback(true);
+      } else {
+         callback(false);
+      }
+   });
 }
