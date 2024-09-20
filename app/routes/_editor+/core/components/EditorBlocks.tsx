@@ -6,6 +6,7 @@ import { type RenderElementProps, useReadOnly } from "slate-react";
 import urlSlug from "url-slug";
 
 import { CustomBlocks } from "~/_custom/blocks";
+import { H2, H3 } from "~/components/Headers";
 import { Loading } from "~/components/Loading";
 import { TableHead } from "~/components/Table";
 
@@ -72,43 +73,18 @@ export function EditorBlocks({
          //@ts-ignore
          const id = urlSlug(element?.children[0]?.text ?? undefined);
          return (
-            <h2
-               id={id}
-               className="dark:text-zinc-100 mt-8 mb-3 pl-3.5 leading-7 dark:bg-dark400 bg-zinc-100 block shadow-sm dark:shadow-zinc-800/70 border-zinc-300
-      font-header relative text-lg scroll-mt-20 rounded-l rounded-r-md py-2 overflow-hidden border shadow-zinc-50 dark:border-zinc-600"
-               {...attributes}
-            >
-               <span className="z-10 relative">{children}</span>
-               <span
-                  contentEditable={false}
-                  className="h-full inline-flex top-0 w-1.5 dark:bg-zinc-600 bg-zinc-200 absolute left-0 z-10"
-               />
-               <div
-                  contentEditable={false}
-                  className="pattern-dots absolute left-0
-                  top-0 z-0 h-full
-                  w-full pattern-bg-white pattern-zinc-600 pattern-opacity-10 
-                  pattern-size-1 dark:pattern-zinc-400 dark:pattern-bg-bg3Dark"
-               />
-            </h2>
+            <H2 id={id} {...attributes}>
+               {children}
+            </H2>
          );
       }
       case BlockType.H3: {
          //@ts-ignore
          const id = urlSlug(element?.children[0]?.text ?? undefined);
          return (
-            <h3
-               id={id}
-               className="dark:bg-dark350 border dark:border-zinc-700 bg-zinc-50 rounded-md py-1.5 px-3.5 mb-2 dark:text-zinc-100 mt-6 
-               font-header text-base scroll-mt-20 shadow-sm shadow-zinc-50 dark:shadow-zinc-800/30 border-zinc-200/90 relative overflow-hidden"
-               {...attributes}
-            >
-               <span
-                  contentEditable={false}
-                  className="h-full w-1.5 select-none bg-zinc-200/40 dark:bg-dark450/80 absolute top-0 left-0"
-               />
+            <H3 id={id} {...attributes}>
                {children}
-            </h3>
+            </H3>
          );
       }
       case BlockType.BulletedList: {
