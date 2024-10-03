@@ -8,7 +8,6 @@ import {
    Transition,
 } from "@headlessui/react";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
-import { useTranslation } from "react-i18next";
 import { InstantSearch } from "react-instantsearch";
 
 import { DotLoader } from "~/components/DotLoader";
@@ -39,7 +38,6 @@ export function SiteHeader({
    const fetcher = useFetcher({ key: "site" });
 
    const adding = isAdding(fetcher, "followSite");
-   const { t } = useTranslation(["site", "auth"]);
 
    return (
       <section
@@ -63,16 +61,15 @@ export function SiteHeader({
                      >
                         <div
                            className="dark:bg-dark450 border dark:border-zinc-600 shadow-1 bg-zinc-50 overflow-hidden flex-none
-                              text-1 flex h-10 w-10 items-center justify-center dark:group-hover:border-zinc-600 border-zinc-300/60
-                              rounded-full shadow-sm transition duration-300 active:translate-y-0.5 group-hover:border-zinc-300"
+                              text-1 flex size-11 items-center justify-center dark:group-hover:border-zinc-600 border-zinc-300/60
+                              rounded-xl shadow-sm transition duration-300 active:translate-y-0.5 group-hover:border-zinc-300"
                         >
                            {site?.icon?.url ? (
                               <Image
-                                 width={40}
-                                 height={40}
-                                 //@ts-ignore
+                                 width={88}
+                                 height={88}
                                  url={site.icon?.url}
-                                 options="aspect_ratio=1:1&height=120&width=120"
+                                 options="aspect_ratio=1:1"
                                  alt="Site Logo"
                               />
                            ) : (
@@ -177,7 +174,7 @@ export function SiteHeader({
                                                p-2 font-bold hover:bg-zinc-100 hover:dark:bg-zinc-700/50"
                                              >
                                                 <div className="flex-grow">
-                                                   {t("follow.actionUnfollow")}
+                                                   Unfollow
                                                 </div>
                                                 <Icon
                                                    size={14}
@@ -220,11 +217,7 @@ export function SiteHeader({
                               className="flex h-9 items-center justify-center rounded-full bg-black shadow dark:shadow-zinc-950
                                  w-[72px] text-sm font-bold text-white dark:bg-white dark:text-black max-laptop:hidden shadow-zinc-400"
                            >
-                              {adding ? (
-                                 <DotLoader />
-                              ) : (
-                                 t("follow.actionFollow")
-                              )}
+                              {adding ? <DotLoader /> : "Follow"}
                            </button>
                         </div>
                      </NotFollowingSite>

@@ -11,7 +11,6 @@ export function TableOfContentsTemplate({
       | Collection["sections"]
       | { id: string; slug: string; name: string }[];
 }) {
-   console.log(sections);
    return (
       <>
          {sections && sections?.length > 1 && (
@@ -61,7 +60,7 @@ export function TableOfContentsTemplate({
                               </Link>
                            </div>
                            {section?.subSections &&
-                           section?.subSections?.length > 0 ? (
+                           section?.subSections?.length > 1 ? (
                               <div
                                  className={clsx(
                                     section?.subSections &&

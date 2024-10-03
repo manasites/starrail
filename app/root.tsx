@@ -101,6 +101,28 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => [
 ];
 
 export const links: LinksFunction = () => [
+   // preload base font to avoid CLS
+   {
+      rel: "preload",
+      href: "/fonts/Nunito_Sans/NunitoSans-Regular.woff2",
+      as: "font",
+      type: "font/woff2",
+      crossOrigin: "anonymous",
+   },
+
+   //preload css makes it nonblocking to html renders
+   { rel: "preload", href: fonts, as: "style" },
+   { rel: "preload", href: tailwindStylesheetUrl, as: "style" },
+   { rel: "preload", href: customStylesheetUrl, as: "style" },
+   { rel: "preload", href: splideCSS, as: "style" },
+   { rel: "preload", href: reactCropUrl, as: "style" },
+
+   { rel: "stylesheet", href: fonts },
+   { rel: "stylesheet", href: tailwindStylesheetUrl },
+   { rel: "stylesheet", href: customStylesheetUrl },
+   { rel: "stylesheet", href: splideCSS },
+   { rel: "stylesheet", href: reactCropUrl },
+
    { rel: "preconnect", href: "https://static.mana.wiki" },
    { rel: "preconnect", href: "https://www.googletagmanager.com" },
    { rel: "preconnect", href: "https://www.google-analytics.com" },
@@ -109,28 +131,6 @@ export const links: LinksFunction = () => [
    { rel: "dns-prefetch", href: "https://static.mana.wiki" },
    { rel: "dns-prefetch", href: "https://www.googletagmanager.com" },
    { rel: "dns-prefetch", href: "https://www.google-analytics.com" },
-
-   //preload css makes it nonblocking to html renders
-   { rel: "preload", href: fonts, as: "style" },
-   { rel: "preload", href: tailwindStylesheetUrl, as: "style" },
-   { rel: "preload", href: customStylesheetUrl, as: "style" },
-   { rel: "preload", href: splideCSS, as: "style" },
-
-   { rel: "preload", href: reactCropUrl, as: "style" },
-
-   { rel: "stylesheet", href: reactCropUrl },
-   { rel: "stylesheet", href: fonts },
-   { rel: "stylesheet", href: tailwindStylesheetUrl },
-   { rel: "stylesheet", href: customStylesheetUrl },
-   { rel: "stylesheet", href: splideCSS },
-
-   {
-      rel: "preload",
-      href: "/fonts/Nunito_Sans/NunitoSans-Regular.woff2",
-      as: "font",
-      type: "font/woff2",
-      crossOrigin: "anonymous",
-   },
 
    ...(process.env.NODE_ENV === "development"
       ? [{ rel: "stylesheet", href: rdtStylesheet }]
@@ -259,9 +259,8 @@ function App() {
             <Meta />
             <Links />
          </head>
-         <ProgressBar />
          <body className="text-light dark:text-dark">
-            {/* <Progress isAnimating={isLoading} key={location.key} /> */}
+            <ProgressBar />
             <div
                data-vaul-drawer-wrapper=""
                className="max-laptop:min-h-screen bg-white dark:bg-bg3Dark"
