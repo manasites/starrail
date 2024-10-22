@@ -335,8 +335,6 @@ function LinkPopover({ element, children }: Props) {
 
    const { pathname } = new URL(element?.url as string);
 
-   console.log(pathname);
-
    return (
       <Popover className="absolute -left-1 -top-1 z-20 transition-opacity opacity-0 duration-200 ease-out group-hover/link:opacity-100">
          {({ open }) => (
@@ -620,7 +618,7 @@ export function LinkBlockElement({ element, children }: Props) {
                   <div className="flex items-center justify-center flex-col gap-1">
                      {!element.removeCircleBorder ? (
                         <Image
-                           className="border border-color-sub rounded-full object-none overflow-hidden"
+                           className="border border-color-sub rounded-full object-contain overflow-hidden"
                            style={{
                               ...(!element.removeCircleBorder
                                  ? {
@@ -629,15 +627,30 @@ export function LinkBlockElement({ element, children }: Props) {
                                    }
                                  : undefined),
                            }}
-                           width={element.iconWidth}
-                           height={element.iconWidth}
+                           width={
+                              element.iconWidth
+                                 ? element.iconWidth * 2
+                                 : undefined
+                           }
+                           height={
+                              element.iconWidth
+                                 ? element.iconWidth * 2
+                                 : undefined
+                           }
                            url={element.icon.url}
                            alt={children ? "" : element?.name}
                         />
                      ) : (
                         <Image
                            className="object-contain"
-                           width={element.iconWidth}
+                           width={
+                              element.iconWidth
+                                 ? element.iconWidth * 2
+                                 : undefined
+                           }
+                           style={{
+                              width: element.iconWidth,
+                           }}
                            url={element.icon.url}
                            alt={element?.name}
                         />
@@ -657,24 +670,29 @@ export function LinkBlockElement({ element, children }: Props) {
             <div className="flex items-center justify-center flex-col gap-1">
                {!element.removeCircleBorder ? (
                   <Image
-                     className="border border-color-sub rounded-full object-none overflow-hidden"
+                     className="border border-color-sub rounded-full object-contain overflow-hidden"
                      style={{
-                        ...(!element.removeCircleBorder
-                           ? {
-                                width: element.iconWidth,
-                                height: element.iconWidth,
-                             }
-                           : undefined),
+                        width: element.iconWidth,
+                        height: element.iconWidth,
                      }}
-                     width={element.iconWidth}
-                     height={element.iconWidth}
+                     width={
+                        element.iconWidth ? element.iconWidth * 2 : undefined
+                     }
+                     height={
+                        element.iconWidth ? element.iconWidth * 2 : undefined
+                     }
                      url={element.icon.url}
                      alt={children ? "" : element?.name}
                   />
                ) : (
                   <Image
                      className="object-contain"
-                     width={element.iconWidth}
+                     width={
+                        element.iconWidth ? element.iconWidth * 2 : undefined
+                     }
+                     style={{
+                        width: element.iconWidth,
+                     }}
                      url={element.icon.url}
                      alt={element?.name}
                   />
