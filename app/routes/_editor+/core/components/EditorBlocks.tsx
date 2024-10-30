@@ -268,7 +268,7 @@ export function EditorBlocks({
          return (
             <div contentEditable={false}>
                <BlockInlineAd element={element} {...attributes} />
-               <div className="hidden">{children}</div>
+               {children && <div className="hidden">{children}</div>}
             </div>
          );
       }
