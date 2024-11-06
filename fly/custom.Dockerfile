@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 # Adjust NODE_VERSION as desired
-ARG NODE_VERSION=22.6.0
+ARG NODE_VERSION=22.11.0
 FROM node:${NODE_VERSION}-alpine as base
 
 LABEL fly_launch_runtime="Payload"
@@ -40,7 +40,6 @@ RUN yarn install --frozen-lockfile --production=true
 # Final stage for app image
 FROM base as runtime
 
-RUN corepack enable
 WORKDIR /app
 
 # Copy over built assets for production
