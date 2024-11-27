@@ -123,33 +123,32 @@ export function AdUnit({
       className = className + " h-[250px] tablet:h-[90px]";
 
    return (
-      <ClientOnly fallback={<div className={className} />}>
-         {() => (
-            <>
-               {!detected && deviceType.isMobile && adType.mobile ? (
-                  <AdUnitSelector
-                     adType={adType.mobile}
-                     selectorId={selectorId}
-                     className={className}
-                  />
-               ) : undefined}
-               {!detected && deviceType.isTablet && adType.tablet ? (
-                  <AdUnitSelector
-                     adType={adType.tablet}
-                     selectorId={selectorId}
-                     className={className}
-                  />
-               ) : undefined}
-               {!detected && deviceType.isDesktop && adType.desktop ? (
-                  <AdUnitSelector
-                     adType={adType.desktop}
-                     selectorId={selectorId}
-                     className={className}
-                  />
-               ) : undefined}
-            </>
-         )}
-      </ClientOnly>
+      <div className={className}>
+         <ClientOnly fallback={<></>}>
+            {() => (
+               <>
+                  {!detected && deviceType.isMobile && adType.mobile && (
+                     <AdUnitSelector
+                        adType={adType.mobile}
+                        selectorId={selectorId}
+                     />
+                  )}
+                  {!detected && deviceType.isTablet && adType.tablet && (
+                     <AdUnitSelector
+                        adType={adType.tablet}
+                        selectorId={selectorId}
+                     />
+                  )}
+                  {!detected && deviceType.isDesktop && adType.desktop && (
+                     <AdUnitSelector
+                        adType={adType.desktop}
+                        selectorId={selectorId}
+                     />
+                  )}
+               </>
+            )}
+         </ClientOnly>
+      </div>
    );
 }
 
