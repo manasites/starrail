@@ -557,7 +557,11 @@ export function LinkBlockElement({ element, children }: Props) {
                                  !element.removeCircleBorder ? 60 : undefined
                               }
                               url={element.icon.url}
-                              alt={element?.name}
+                              alt={
+                                 children && !element.hideLinkText
+                                    ? ""
+                                    : element?.name ?? undefined
+                              }
                            />
                         ) : (
                            <Icon
@@ -605,7 +609,11 @@ export function LinkBlockElement({ element, children }: Props) {
                         width={!element.removeCircleBorder ? 60 : 120}
                         height={!element.removeCircleBorder ? 60 : undefined}
                         url={element.icon.url}
-                        alt={element?.name}
+                        alt={
+                           children && !element.hideLinkText
+                              ? ""
+                              : element?.name ?? undefined
+                        }
                      />
                   ) : (
                      <Icon name="component" className="text-1" size={12} />
@@ -646,7 +654,11 @@ export function LinkBlockElement({ element, children }: Props) {
                                  : undefined
                            }
                            url={element.icon.url}
-                           alt={children ? "" : element?.name}
+                           alt={
+                              children && !element.hideLinkText
+                                 ? ""
+                                 : element?.name ?? undefined
+                           }
                         />
                      ) : (
                         <Image
@@ -661,7 +673,11 @@ export function LinkBlockElement({ element, children }: Props) {
                               width: element.iconWidth,
                            }}
                            url={element.icon.url}
-                           alt={element?.name}
+                           alt={
+                              children && !element.hideLinkText
+                                 ? ""
+                                 : element?.name ?? undefined
+                           }
                         />
                      )}
                      {!element.hideLinkText ? null : (
@@ -696,7 +712,11 @@ export function LinkBlockElement({ element, children }: Props) {
                         element.iconWidth ? element.iconWidth * 2 : undefined
                      }
                      url={element.icon.url}
-                     alt={children ? "" : element?.name}
+                     alt={
+                        children && !element.hideLinkText
+                           ? ""
+                           : element?.name ?? undefined
+                     }
                   />
                ) : (
                   <Image
@@ -709,7 +729,11 @@ export function LinkBlockElement({ element, children }: Props) {
                         width: element.iconWidth,
                      }}
                      url={element.icon.url}
-                     alt={element?.name}
+                     alt={
+                        children && !element.hideLinkText
+                           ? ""
+                           : element?.name ?? undefined
+                     }
                   />
                )}
                {!element.hideLinkText ? undefined : (
